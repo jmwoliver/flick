@@ -77,6 +77,8 @@ With a free Apple ID, apps installed on the phone this way stop launching after 
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the transport design, text-field detection, how typing is replayed, latency measurements and a source map.
 
+To publish a Mac release, see [docs/RELEASING.md](docs/RELEASING.md).
+
 ## Known limitations
 
 - Some custom-drawn text views don't expose accessibility roles (some games and terminal emulators). Use the ⌨︎ button there.
