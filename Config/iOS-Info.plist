@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Flick sends pointer movement to your Mac over Bluetooth as a low-latency backup path to Wi-Fi.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Flick finds your Mac on the local network (or directly over peer-to-peer Wi-Fi) so your phone can act as its trackpad and keyboard.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_flick._tcp</string>
+	</array>
+</dict>
+</plist>

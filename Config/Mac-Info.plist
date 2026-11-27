@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Flick receives pointer movement from your iPhone over Bluetooth as a low-latency backup path to Wi-Fi.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Flick listens on the local network so your iPhone can connect as a trackpad and keyboard.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_flick._tcp</string>
+	</array>
+</dict>
+</plist>

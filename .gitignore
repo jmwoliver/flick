@@ -1,0 +1,18 @@
+build/
+xcuserdata/
+*.xcuserstate
+.DS_Store
+DerivedData/
+*.xcarchive
+*.ipa
+*.dSYM.zip
+dist/
+
+# Signing material and API keys — never commit these
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+*.provisionprofile
+.env
+.env.*
