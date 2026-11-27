@@ -10,10 +10,11 @@
 #   Flick-macOS.zip          the notarized, stapled app (what website/install.sh downloads)
 #   Flick-macOS.zip.sha256   its checksum, in `shasum -a 256` format
 #
-# One-time setup (see docs/RELEASING.md):
-#   - A "Developer ID Application" certificate in your keychain (Apple Developer Program).
-#   - Notarization credentials saved as a keychain profile:
-#       xcrun notarytool store-credentials flick-notary --apple-id <you@example.com> --team-id <TEAMID>
+# Requirements (see docs/RELEASING.md):
+#   - Xcode signed in to an Apple ID on a paid Apple Developer Program team. Xcode creates the
+#     Developer ID certificate itself, and notarizes with that account.
+#   - Optional: notarytool credentials saved as the keychain profile "flick-notary". If present,
+#     they're used for notarization instead of the Xcode account.
 #   - `gh` signed in to GitHub with access to the repo.
 
 set -euo pipefail
@@ -43,6 +44,7 @@ TEAM_ID="$(xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Relea
   | awk -F' = ' '/^ *DEVELOPMENT_TEAM = /{print $2; exit}')"
 [ -n "$TEAM_ID" ] || fail "Couldn't read DEVELOPMENT_TEAM from the project."
 
+USE_NOTARYTOOL=false
 if ! $DEV; then
   [ -z "$(git status --porcelain)" ] || fail "The working tree has uncommitted changes. Commit or stash them first."
   [ "$(git rev-parse --abbrev-ref HEAD)" = "main" ] || fail "Release from the main branch."
@@ -50,11 +52,8 @@ if ! $DEV; then
   [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] || fail "main isn't in sync with origin/main. Push or pull first."
   ! git rev-parse -q --verify "refs/tags/$TAG" >/dev/null || fail "Tag $TAG already exists."
   ! gh release view "$TAG" >/dev/null 2>&1 || fail "A GitHub release named $TAG already exists."
-  security find-identity -v -p codesigning | grep -q "Developer ID Application: .*($TEAM_ID)" \
-    || fail "No 'Developer ID Application' certificate for team $TEAM_ID in your keychain. See docs/RELEASING.md."
-  xcrun notarytool history --keychain-profile "$NOTARY_PROFILE" >/dev/null 2>&1 \
-    || fail "No notarization credentials in keychain profile '$NOTARY_PROFILE'. See docs/RELEASING.md."
   gh auth status >/dev/null 2>&1 || fail "gh isn't signed in to GitHub. Run: gh auth login"
+  xcrun notarytool history --keychain-profile "$NOTARY_PROFILE" >/dev/null 2>&1 && USE_NOTARYTOOL=true
 fi
 
 # The installer refuses apps from any other team, so a mismatch would ship a release nobody can install.
@@ -73,53 +72,68 @@ xcodebuild archive -quiet \
   -project "$PROJECT" -scheme "$SCHEME" -configuration Release \
   -destination "generic/platform=macOS" \
   -archivePath "$BUILD/Flick.xcarchive" \
+  -allowProvisioningUpdates \
   MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
   || fail "Archive failed."
 
-say "Exporting and signing..."
-METHOD="developer-id"; $DEV && METHOD="debugging"
-cat > "$BUILD/ExportOptions.plist" <<PLIST
+export_options() {  # method, destination
+  cat > "$BUILD/ExportOptions.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>method</key><string>$METHOD</string>
+  <key>method</key><string>$1</string>
+  <key>destination</key><string>$2</string>
   <key>teamID</key><string>$TEAM_ID</string>
   <key>signingStyle</key><string>automatic</string>
 </dict>
 </plist>
 PLIST
-xcodebuild -exportArchive -quiet \
-  -archivePath "$BUILD/Flick.xcarchive" \
-  -exportOptionsPlist "$BUILD/ExportOptions.plist" \
-  -exportPath "$BUILD/export" \
-  -allowProvisioningUpdates \
-  || fail "Export failed."
-APP="$BUILD/export/Flick.app"
-[ -d "$APP" ] || fail "Export didn't produce Flick.app."
+}
+export_archive() {
+  xcodebuild -exportArchive -quiet \
+    -archivePath "$BUILD/Flick.xcarchive" \
+    -exportOptionsPlist "$BUILD/ExportOptions.plist" \
+    -exportPath "$1" \
+    -allowProvisioningUpdates
+}
+NOT_PAID="Developer ID signing failed. It needs a paid Apple Developer Program team selected in the project, with Xcode signed in to it (Settings › Accounts)."
 
-# ── Check the build ─────────────────────────────────────────────────────────
-say "Checking the signature..."
-codesign --verify --deep --strict "$APP" || fail "Signature check failed."
-SIG="$(codesign -dv --verbose=4 "$APP" 2>&1)"
-grep -q "TeamIdentifier=$TEAM_ID" <<<"$SIG" || fail "Signed by the wrong team."
-grep -q "flags=.*runtime" <<<"$SIG" || fail "Hardened Runtime is off; notarization would fail."
-if ! $DEV; then
-  grep -q "Authority=Developer ID Application" <<<"$SIG" || fail "Not signed with a Developer ID certificate."
-  ! codesign -d --entitlements - "$APP" 2>/dev/null | grep -q "get-task-allow" || fail "The app has the debugging entitlement (get-task-allow); notarization would fail."
-fi
-ARCHS="$(lipo -archs "$APP/Contents/MacOS/Flick")"
-[[ "$ARCHS" == *arm64* && "$ARCHS" == *x86_64* ]] || fail "Expected a universal app (arm64 + x86_64), got: $ARCHS"
-SHIPPED_VERSION="$(defaults read "$APP/Contents/Info.plist" CFBundleShortVersionString)"
-[ "$SHIPPED_VERSION" = "$VERSION" ] || fail "App reports version $SHIPPED_VERSION, expected $VERSION."
+# Checks that the app is what we mean to ship. Run before notarizing when we can, and on the final app.
+check_app() {
+  local app="$1"
+  codesign --verify --deep --strict "$app" || fail "Signature check failed."
+  local sig; sig="$(codesign -dv --verbose=4 "$app" 2>&1)"
+  grep -q "TeamIdentifier=$TEAM_ID" <<<"$sig" || fail "Signed by the wrong team."
+  grep -q "flags=.*runtime" <<<"$sig" || fail "Hardened Runtime is off; notarization would fail."
+  if ! $DEV; then
+    grep -q "Authority=Developer ID Application" <<<"$sig" || fail "Not signed with a Developer ID certificate."
+    ! codesign -d --entitlements - "$app" 2>/dev/null | grep -q "get-task-allow" || fail "The app has the debugging entitlement (get-task-allow); notarization would fail."
+  fi
+  local archs; archs="$(lipo -archs "$app/Contents/MacOS/Flick")"
+  [[ "$archs" == *arm64* && "$archs" == *x86_64* ]] || fail "Expected a universal app (arm64 + x86_64), got: $archs"
+  [ "$(defaults read "$app/Contents/Info.plist" CFBundleShortVersionString)" = "$VERSION" ] || fail "The app reports the wrong version."
+}
 
-# ── Notarize ────────────────────────────────────────────────────────────────
-zip_app() { rm -f "$DIST/$ASSET"; ditto -c -k --sequesterRsrc --keepParent "$APP" "$DIST/$ASSET"; }
+zip_app() { rm -f "$DIST/$ASSET"; ditto -c -k --sequesterRsrc --keepParent "$1" "$DIST/$ASSET"; }
+
+# ── Sign and notarize ───────────────────────────────────────────────────────
 if $DEV; then
+  say "Exporting with development signing..."
+  export_options debugging export
+  export_archive "$BUILD/export" || fail "Export failed."
+  APP="$BUILD/export/Flick.app"
+  say "Checking the app..."; check_app "$APP"
   say "Skipping notarization (dev mode)."
-else
-  zip_app
-  say "Notarizing (this usually takes a few minutes)..."
+
+elif $USE_NOTARYTOOL; then
+  say "Exporting with Developer ID..."
+  export_options developer-id export
+  export_archive "$BUILD/export" || fail "$NOT_PAID"
+  APP="$BUILD/export/Flick.app"
+  say "Checking the app..."; check_app "$APP"
+  zip_app "$APP"
+  say "Notarizing with notarytool profile '$NOTARY_PROFILE' (usually a few minutes)..."
   xcrun notarytool submit "$DIST/$ASSET" --keychain-profile "$NOTARY_PROFILE" --wait --output-format json > "$BUILD/notary.json" \
     || fail "notarytool failed. See $BUILD/notary.json."
   STATUS="$(plutil -extract status raw -o - "$BUILD/notary.json")"
@@ -128,14 +142,36 @@ else
     xcrun notarytool log "$ID" --keychain-profile "$NOTARY_PROFILE" "$BUILD/notary-log.json" || true
     fail "Notarization status: $STATUS. Apple's log: $BUILD/notary-log.json"
   fi
-  say "Stapling the notarization ticket..."
   xcrun stapler staple "$APP"
-  xcrun stapler validate "$APP"
+
+else
+  # Xcode signs with Developer ID and submits to Apple's notary service with its signed-in
+  # account, then hands back the notarized, stapled app.
+  say "Signing with Developer ID and submitting for notarization with your Xcode account..."
+  export_options developer-id upload
+  export_archive "$BUILD/submitted" || fail "$NOT_PAID"
+  say "Waiting for Apple's notary service (usually a few minutes, checking every 30 s)..."
+  for i in $(seq 1 60); do
+    if xcodebuild -exportNotarizedApp -archivePath "$BUILD/Flick.xcarchive" -exportPath "$BUILD/notarized" > "$BUILD/notarized.log" 2>&1 \
+       && [ -d "$BUILD/notarized/Flick.app" ]; then
+      break
+    fi
+    grep -qiE "invalid|rejected" "$BUILD/notarized.log" && fail "Apple rejected the app. Details: $BUILD/notarized.log"
+    [ "$i" = 60 ] && fail "Notarization didn't finish within 30 minutes. Last status: $BUILD/notarized.log"
+    sleep 30
+  done
+  APP="$BUILD/notarized/Flick.app"
+  say "Checking the app..."; check_app "$APP"
+fi
+
+if ! $DEV; then
+  xcrun stapler validate "$APP" >/dev/null || fail "The app has no stapled notarization ticket."
   spctl --assess --type execute -vv "$APP" 2>&1 | grep -q "source=Notarized Developer ID" || fail "Gatekeeper doesn't accept the app."
+  say "Notarized and accepted by Gatekeeper."
 fi
 
 # ── Package ─────────────────────────────────────────────────────────────────
-zip_app   # zip again so the shipped archive contains the stapled ticket
+zip_app "$APP"   # the shipped zip contains the stapled ticket
 (cd "$DIST" && shasum -a 256 "$ASSET" > "$ASSET.sha256")
 say "Built $DIST/$ASSET ($(du -h "$DIST/$ASSET" | cut -f1)), sha256 $(cut -d' ' -f1 "$DIST/$ASSET.sha256")"
 

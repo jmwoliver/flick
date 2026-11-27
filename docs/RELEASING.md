@@ -16,15 +16,11 @@ Mac releases are GitHub releases with two files: `Flick-macOS.zip` (the signed, 
    - In Xcode, open the project and choose the new team under *Signing & Capabilities* for both the **Flick** and **FlickMac** targets.
    - Set `TEAM_ID` in `website/install.sh` to the new ID, and push. The site redeploys on its own. The installer refuses apps signed by any other team, and the release script checks the two match.
 
-3. **Create a Developer ID certificate.** In Xcode: *Settings › Accounts*, select your team, *Manage Certificates…*, then **+** › **Developer ID Application**.
+3. **Sign in to Xcode** with that Apple ID (*Settings › Accounts*). That's all signing and notarization need: during a release, Xcode creates the Developer ID certificate and notarizes the app using this account.
 
-4. **Save notarization credentials.** Create an app-specific password at [account.apple.com](https://account.apple.com) under *Sign-In and Security › App-Specific Passwords*. Then run this; it asks for that password and stores it in your keychain:
+   Optional: to notarize with `notarytool` instead (for example from a machine without your Xcode account), create an app-specific password at [account.apple.com](https://account.apple.com) and save it with `xcrun notarytool store-credentials flick-notary --apple-id <your Apple ID email> --team-id <TEAMID>`. The release script uses that profile when it exists.
 
-   ```bash
-   xcrun notarytool store-credentials flick-notary --apple-id <your Apple ID email> --team-id <TEAMID>
-   ```
-
-5. **Sign in to GitHub's CLI** if you haven't: `gh auth login`.
+4. **Sign in to GitHub's CLI** if you haven't: `gh auth login`.
 
 ### Making a release
 
@@ -38,10 +34,10 @@ This creates a **draft** release. Check it on GitHub, then publish it there. The
 
 The script:
 
-1. Checks the setup: clean tree, on `main` and in sync with GitHub, tag not taken, Developer ID certificate, notary credentials, and that `install.sh` expects your team.
+1. Checks the setup: clean tree, on `main` and in sync with GitHub, tag not taken, and that `install.sh` expects your team.
 2. Archives a universal (Apple silicon and Intel) Release build. The version is the one you pass; the build number is the commit count.
-3. Exports it signed with Developer ID, then checks the signature, team, Hardened Runtime, architectures and version.
-4. Submits it to Apple's notary service, waits, staples the ticket, and confirms Gatekeeper accepts it.
+3. Signs it with Developer ID and submits it to Apple's notary service, using your Xcode account (or the `flick-notary` profile if you saved one).
+4. Waits for notarization, then checks the signature, team, Hardened Runtime, architectures, version and stapled ticket, and confirms Gatekeeper accepts it.
 5. Zips it, writes the checksum to `dist/`, tags `v0.2.0`, and creates the GitHub release.
 
 To check a release, run the installer on a Mac:
@@ -56,7 +52,7 @@ curl -fsSL https://getflick.net/install.sh | bash
 
 ### When notarization fails
 
-The script saves Apple's log to `build/release/notary-log.json`. The usual causes are a missing Hardened Runtime, the debugging entitlement (`get-task-allow`), or something unsigned inside the app. The script checks for the first two before submitting.
+The script saves Apple's response to `build/release/notarized.log` (Xcode account) or `build/release/notary-log.json` (`notarytool`). The usual causes are a missing Hardened Runtime, the debugging entitlement (`get-task-allow`), or something unsigned inside the app. The script checks for the first two before submitting.
 
 ### Versions
 
