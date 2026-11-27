@@ -5,7 +5,7 @@ Everything to paste into App Store Connect for the first submission. Field limit
 ## Before you submit
 
 1. **Publish a Mac release first** (`scripts/release-mac.sh 1.0.0 --publish`; see [RELEASING.md](../RELEASING.md)). App Review needs the Mac app to test the iPhone app, and the review notes point them to the install command.
-2. **Record a short demo video** (under a minute) showing pairing and using the phone to control a Mac. Upload it somewhere the reviewer can watch without signing in, such as an unlisted YouTube video, and put the link in the review notes. Reviewers sometimes can't test hardware-dependent apps, and a video avoids a rejection round.
+2. **Attach the demo video** under *App Review Information › Attachment*. The video for 1.0 shows pairing, pointing and clicking, typing, one-handed scrolling and switching apps (the iPhone app in the Simulator, controlling a real Mac). Reviewers sometimes can't test hardware-dependent apps, and a video avoids a rejection round.
 
 ## App information
 
@@ -91,7 +91,7 @@ Already answered in the app (`ITSAppUsesNonExemptEncryption = NO`), so App Store
 > 4. On the iPhone, open Flick (allow Local Network access), tap the Mac, and enter the PIN. The iPhone and Mac should be on the same Wi-Fi network.
 > 5. Move a finger on the iPhone to move the Mac's pointer; tap to click. Click into any text field on the Mac and the iPhone keyboard opens.
 >
-> A demo video: <LINK>
+> A demo video is attached to this submission. It shows the iPhone app (running in the iOS Simulator) controlling a real Mac.
 >
 > No account or sign-in is needed. Local Network is used to find and connect to the Mac; Bluetooth is a second, faster path for pointer movement. Flick collects no data.
 

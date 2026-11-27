@@ -15,7 +15,13 @@ They connect over Wi-Fi, over Apple's peer-to-peer Wi-Fi when there's no shared 
 
 Website: **[getflick.net](https://getflick.net)**
 
-> **Status:** pre-release. Until the App Store and Mac downloads are available, [build it from source](#build-from-source).
+**Install Flick for Mac** (macOS 14 or later):
+
+```bash
+curl -fsSL https://getflick.net/install.sh | bash
+```
+
+or download it from the [latest release](https://github.com/jmwoliver/flick/releases/latest). **Flick for iPhone** is on its way to the App Store; until then, [build it from source](#build-from-source).
 
 ## Gestures
 
