@@ -1,0 +1,24 @@
+{
+  "bundleId": "com.jacobwoliver.flick",
+  "locale": "en-US",
+  "name": "Flick: Remote for Mac",
+  "subtitle": "Trackpad & keyboard on iPhone",
+  "primaryCategory": "UTILITIES",
+  "secondaryCategory": "PRODUCTIVITY",
+  "contentRights": "DOES_NOT_USE_THIRD_PARTY_CONTENT",
+  "copyright": "2026 Jacob Woliver",
+  "privacyPolicyUrl": "https://getflick.net/privacy",
+  "supportUrl": "https://getflick.net/support",
+  "marketingUrl": "https://getflick.net",
+  "promotionalText": "Control your Mac from your iPhone: a full-size trackpad, a keyboard that opens when you click a text field, and one-handed scrolling and Spaces.",
+  "description": "Flick turns your iPhone into a trackpad and keyboard for your Mac.\n\nPoint, click, drag and scroll the same way you would on a MacBook trackpad. When you click into a text field on your Mac, the iPhone keyboard opens on its own, with autocorrect, swipe typing and dictation. Click away and it closes.\n\nUSE IT WITH ONE HAND\n• Slide your thumb along the side edge to scroll.\n• Slide along the bottom edge to switch between Spaces.\n• Swipe up from the bottom for Mission Control.\n\nSWITCH APPS\nYour Mac's Dock is on your phone. Tap an app to bring it to the front.\n\nSHORTCUTS\n⌘C, ⌘V, undo, find and your own shortcuts are one tap away, with esc, tab, the arrow keys and modifier keys always on hand.\n\nFAST\nEvery movement goes over Wi-Fi and Bluetooth at the same time, and your Mac uses whichever arrives first.\n\nPRIVATE\nNo accounts, no servers and no tracking. Your iPhone talks only to your Mac, over an encrypted connection that you pair once with a PIN.\n\nREQUIRES FLICK FOR MAC\nFlick needs the free Flick for Mac app (macOS 14 or later). Get it at getflick.net.\n\nFlick is free and open source.",
+  "keywords": "trackpad,mouse,keyboard,remote,control,touchpad,macbook,mission control,spaces,typing,presenter",
+  "reviewNotes": "Flick is a companion app: it controls a Mac running the free Flick for Mac app, which we distribute ourselves (notarized by Apple) at https://getflick.net.\n\nTo test:\n1. On a Mac with macOS 14 or later, open Terminal and run:\n   curl -fsSL https://getflick.net/install.sh | bash\n   (or download Flick-macOS.zip from https://github.com/jmwoliver/flick/releases/latest)\n2. When Flick for Mac opens, allow Local Network access, and turn on Flick in System Settings › Privacy & Security › Accessibility. Accessibility is what lets it move the pointer and type.\n3. Click the Flick icon in the Mac's menu bar to see a 6-digit PIN.\n4. On the iPhone, open Flick (allow Local Network access), tap the Mac, and enter the PIN. The iPhone and Mac should be on the same Wi-Fi network.\n5. Move a finger on the iPhone to move the Mac's pointer; tap to click. Click into any text field on the Mac and the iPhone keyboard opens.\n\nA demo video is attached to this submission. It shows the iPhone app (running in the iOS Simulator) controlling a real Mac.\n\nNo account or sign-in is needed. Local Network is used to find and connect to the Mac; Bluetooth is a second, faster path for pointer movement. Flick collects no data.",
+  "screenshotDisplayType": "APP_IPHONE_67",
+  "screenshots": [
+    "docs/app-store/screenshots/1-trackpad.png",
+    "docs/app-store/screenshots/2-keyboard.png"
+  ],
+  "versionString": "1.0",
+  "buildNumber": "11"
+}
