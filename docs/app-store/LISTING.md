@@ -11,8 +11,8 @@ Everything to paste into App Store Connect for the first submission. Field limit
 
 | Field | Value |
 |---|---|
-| Name (30) | **Flick: Mac Remote** |
-| Subtitle (30) | Trackpad & keyboard for Mac |
+| Name (30) | **Flick: Remote for Mac** |
+| Subtitle (30) | Trackpad & keyboard on iPhone |
 | Bundle ID | `com.jacobwoliver.flick` |
 | SKU | `flick-ios` |
 | Primary category | Utilities |
@@ -22,7 +22,7 @@ Everything to paste into App Store Connect for the first submission. Field limit
 | Price | Free |
 | Copyright | 2026 Jacob Woliver |
 
-> **About "Mac" in the name.** Apple's trademark guidelines allow "Mac" when it describes compatibility ("…for Mac"). App Review sometimes rejects names that use Apple trademarks in other ways, under guideline 5.2.5. If "Flick: Mac Remote" is rejected, the safer fallback is **Flick: Remote for Mac** (21 characters).
+> **About "Mac" in the name.** Apple's trademark guidelines allow "Mac" when it describes compatibility, as in "…for Mac", which is why the name is phrased that way. App Review can reject other uses of Apple trademarks in names (guideline 5.2.5).
 
 ## URLs
 

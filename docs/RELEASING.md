@@ -67,7 +67,7 @@ Use `major.minor.patch`. The iPhone app's version is set separately in Xcode and
 ### One-time setup
 
 1. Complete steps 1 and 2 of the Mac setup above. Make sure the **Flick** target also uses your paid team.
-2. **Create the app in App Store Connect.** At [appstoreconnect.apple.com](https://appstoreconnect.apple.com), go to *Apps › + › New App*: platform iOS, name **Flick: Mac Remote**, bundle ID `com.jacobwoliver.flick` (if it isn't listed, register it under *Certificates, Identifiers & Profiles › Identifiers*), and SKU `flick-ios`.
+2. **Create the app in App Store Connect.** At [appstoreconnect.apple.com](https://appstoreconnect.apple.com), go to *Apps › + › New App*: platform iOS, name **Flick: Remote for Mac**, bundle ID `com.jacobwoliver.flick` (if it isn't listed, register it under *Certificates, Identifiers & Profiles › Identifiers*), and SKU `flick-ios`.
 3. Make sure Xcode is signed in to your Apple ID (*Settings › Accounts*). The upload uses that account, and Xcode creates the distribution certificate on the first upload.
 
 ### Uploading a build
