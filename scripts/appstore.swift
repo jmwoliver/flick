@@ -69,7 +69,14 @@ func api(_ method: String, _ path: String, _ body: JSON? = nil) async throws -> 
     let status = (resp as! HTTPURLResponse).statusCode
     guard (200..<300).contains(status) else {
         let errors = ((try? JSONSerialization.jsonObject(with: data)) as? JSON)?["errors"] as? [JSON] ?? []
-        let text = errors.map { "\($0["title"] ?? ""): \($0["detail"] ?? "")" }.joined(separator: "; ")
+        // Apple puts the actual reasons (e.g. a missing field) under meta.associatedErrors.
+        let text = errors.map { e -> String in
+            var s = "\(e["title"] ?? ""): \(e["detail"] ?? "")"
+            if let assoc = (e["meta"] as? JSON)?["associatedErrors"] as? [String: [JSON]] {
+                for (_, list) in assoc { for a in list { s += "\n    - \(a["detail"] ?? a["title"] ?? a["code"] ?? "")" } }
+            }
+            return s
+        }.joined(separator: "; ")
         throw APIError(status: status, body: text.isEmpty ? String(decoding: data, as: UTF8.self) : text)
     }
     return data.isEmpty ? [:] : (try JSONSerialization.jsonObject(with: data) as? JSON ?? [:])
