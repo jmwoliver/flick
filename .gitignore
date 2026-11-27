@@ -16,3 +16,6 @@ dist/
 *.provisionprofile
 .env
 .env.*
+
+# Vercel CLI project link
+.vercel/

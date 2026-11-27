@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flick: control your Mac from your iPhone</title>
+  <meta name="description" content="Point, click, type and switch apps on your Mac from your iPhone. Free and open source.">
+  <meta property="og:title" content="Flick">
+  <meta property="og:description" content="Control your Mac from your iPhone.">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/icon.svg" alt="" width="30" height="30">Flick</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="/support">Support</a>
+        <a href="https://github.com/jmwoliver/flick">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <h1>Control your Mac from your iPhone.</h1>
+          <p class="lede">Point, click, type and switch apps on your Mac, right from your phone. Free and open source.</p>
+        </div>
+
+        <div class="hero-demo">
+          <div class="scene" id="scene" role="img" aria-label="Animation: a finger on the iPhone moves the pointer on the Mac; a thumb on the left edge scrolls; sliding along the bottom edge switches Spaces; tapping an app on the iPhone brings it to the front on the Mac; and typing on the iPhone keyboard types into the Mac.">
+            <div class="mac">
+              <div class="mac-lid">
+                <div class="display" id="display">
+                  <div class="spaces" id="spaces">
+                    <div class="space">
+                      <div class="wallpaper"></div>
+                      <div class="win win-browser front" id="win-browser">
+                        <div class="titlebar"><i></i><i></i><i></i><span class="url"></span></div>
+                        <div class="viewport">
+                          <div class="page" id="page">
+                            <div class="pg-hero"></div>
+                            <div class="pg-line w80"></div><div class="pg-line w60"></div><div class="pg-line w70"></div>
+                            <div class="pg-cards"><div></div><div></div><div></div></div>
+                            <div class="pg-line w75"></div><div class="pg-line w50"></div><div class="pg-line w65"></div>
+                            <div class="pg-cards"><div></div><div></div><div></div></div>
+                            <div class="pg-line w80"></div><div class="pg-line w60"></div><div class="pg-line w70"></div>
+                            <div class="pg-cards"><div></div><div></div><div></div></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="win win-notes" id="win-notes">
+                        <div class="titlebar"><i></i><i></i><i></i></div>
+                        <div class="notes">
+                          <div class="notes-side"><span class="on"></span><span></span><span></span><span></span></div>
+                          <div class="notes-body">
+                            <div class="note-title">To do</div>
+                            <div class="note-line">Book flights</div>
+                            <div class="note-line">Renew passport</div>
+                            <div class="note-line" id="note-input"><span id="typed"></span><span class="caret" id="caret"></span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="space space-2">
+                      <div class="wallpaper"></div>
+                      <div class="win win-music front">
+                        <div class="titlebar"><i></i><i></i><i></i></div>
+                        <div class="music">
+                          <div class="album"></div>
+                          <div class="tracks"><b></b><span class="w80"></span><span class="w60"></span><span class="w70"></span><span class="w50"></span><span class="w65"></span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="menubar"><b id="menu-app">Browser</b><span>File</span><span>Edit</span><span>View</span><i class="menu-time">9:41</i></div>
+                  <div class="dock">
+                    <span class="app ic-files"></span><span class="app ic-browser running" id="mac-browser"></span><span class="app ic-notes running" id="mac-notes"></span><span class="app ic-mail"></span><span class="app ic-music running"></span>
+                  </div>
+
+                  <svg class="cursor" id="cursor" viewBox="0 0 14 21"><path d="M1.5 1.5v15.2l3.9-3.7 2.6 6 2.6-1.1-2.6-5.9h5.4z" fill="#111" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                </div>
+              </div>
+              <div class="mac-base"></div>
+            </div>
+
+            <div class="iphone">
+              <div class="iphone-screen" id="phone">
+                <div class="island"></div>
+                <div class="status"><span>9:41</span><span class="status-icons"><i></i><b></b></span></div>
+                <div class="pad"><div class="strip-glow" id="strip-glow"></div><div class="strip" id="strip"></div><div class="edge" id="edge"></div></div>
+                <div class="pdock">
+                  <span class="key-btn" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 10h1M9.5 10h1M13 10h1M16.5 10h1M8 14h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                  </span>
+                  <span class="app ic-files"></span><span class="app ic-browser running" id="phone-browser"></span><span class="app ic-notes running" id="phone-notes"></span>
+                  <span class="key-btn">⌘</span>
+                </div>
+                <div class="kb" id="kb">
+                  <div class="kb-bar"><span>esc</span><span>tab</span><span>⌘</span><span>⌥</span><span>⌃</span><span>⇧</span><span>←</span><span>→</span></div>
+                  <div class="kb-row"></div><div class="kb-row"></div><div class="kb-row"></div><div class="kb-row last"></div>
+                </div>
+                <span class="finger" id="f1"></span>
+                <div class="home-bar"></div>
+              </div>
+            </div>
+          </div>
+          <ol class="demo-steps" id="demo-steps">
+            <li>Point and click</li>
+            <li>Scroll with one hand</li>
+            <li>Switch Spaces</li>
+            <li>Switch apps</li>
+            <li>Type</li>
+          </ol>
+        </div>
+
+        <div class="hero-install">
+          <h2>Get started</h2>
+          <ol class="install">
+            <li>
+              <strong>Install Flick on your Mac.</strong> In Terminal, run:
+              <div class="command">
+                <code id="install-command">curl -fsSL https://getflick.net/install.sh | bash</code>
+                <button type="button" id="copy-install" aria-label="Copy install command">Copy</button>
+              </div>
+              <span class="small">The first release is coming soon. <a href="/install.sh">See what the script does.</a></span>
+            </li>
+            <li>
+              <strong>Get Flick for iPhone.</strong> Coming soon to the App Store. Until then, <a href="https://github.com/jmwoliver/flick#build-from-source">build it from source</a>.
+            </li>
+            <li>
+              <strong>Pair them.</strong> Open Flick on your iPhone, tap your Mac, and enter the PIN from Flick's menu bar icon.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <div class="wrap">
+        <h2>What you can do</h2>
+        <ul class="can-do">
+          <li><strong>Use it as a trackpad.</strong> Click, right-click, drag and scroll, the same way you would on a MacBook.</li>
+          <li><strong>Type.</strong> The keyboard opens when you click into a text field on your Mac. Autocorrect, swipe typing and dictation all work.</li>
+          <li><strong>Switch apps.</strong> Your Mac's Dock is on your phone. Tap an app to bring it to the front.</li>
+          <li><strong>Use it with one hand.</strong> Slide your thumb along the side edge to scroll, or along the bottom edge to switch Spaces. Swipe up from the bottom for Mission Control.</li>
+          <li><strong>Use shortcuts.</strong> Tap ⌘C, ⌘V or your own shortcuts, with esc, tab and arrow keys always on hand.</li>
+        </ul>
+        <p class="fine">Requires iOS 17 and macOS 14 or later. Works over Wi-Fi or Bluetooth, with no account. Your phone and Mac talk only to each other. <a href="/privacy">Privacy policy</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Flick is open source under the MIT License.</span>
+      <nav aria-label="Footer">
+        <a href="/support">Support</a>
+        <a href="/privacy">Privacy</a>
+        <a href="https://github.com/jmwoliver/flick">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

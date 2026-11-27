@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support · Flick</title>
+  <meta name="description" content="Set up Flick, fix common problems, and get help.">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/icon.svg" alt="" width="30" height="30">Flick</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="/#download">Download</a>
+        <a href="/support" aria-current="page">Support</a>
+        <a class="hide-sm" href="https://github.com/jmwoliver/flick">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="prose">
+    <h1>Support</h1>
+
+    <h2>Getting started</h2>
+    <ol>
+      <li>Install <strong>Flick for Mac</strong> and open it. Allow <strong>Local Network</strong> access when asked.</li>
+      <li>Turn on Accessibility for Flick: System Settings › Privacy &amp; Security › Accessibility.</li>
+      <li>Click the Flick icon in the menu bar to see the 6-digit pairing PIN.</li>
+      <li>Open <strong>Flick</strong> on your iPhone, tap your Mac, and enter the PIN.</li>
+    </ol>
+    <p>You only need the PIN once. After that, your iPhone reconnects to that Mac on its own.</p>
+
+    <h2>Troubleshooting</h2>
+
+    <details>
+      <summary>My Mac doesn't appear on the iPhone</summary>
+      <p>Make sure Flick for Mac is running (look for its icon in the menu bar). Check that Local Network access is on for Flick on both devices: on iPhone, Settings › Privacy &amp; Security › Local Network; on Mac, System Settings › Privacy &amp; Security › Local Network. The devices work best on the same Wi-Fi network, but can also connect directly when they're close together.</p>
+    </details>
+
+    <details>
+      <summary>It says "Wrong PIN" or "Couldn't pair"</summary>
+      <p>Check the PIN in the Flick menu on your Mac and try again. The PIN changes when you click <strong>New PIN</strong> or <strong>Unpair</strong>. If the Mac's menu says pairing is paused, see the next question.</p>
+    </details>
+
+    <details>
+      <summary>The Mac says "Pairing is paused"</summary>
+      <p>After 5 wrong PINs, the Mac stops accepting pairing attempts for a short time, starting at 30 seconds, to protect against guessing. Wait for the pause to end, then try again with the PIN shown in the Mac's menu.</p>
+    </details>
+
+    <details>
+      <summary>My iPhone can't reconnect, or says the Mac no longer recognizes it</summary>
+      <p>The Mac was probably unpaired from this iPhone. On the iPhone, touch and hold your Mac in the list, choose <strong>Pair again with PIN</strong>, and enter the PIN from the Mac's menu.</p>
+    </details>
+
+    <details>
+      <summary>It says the Mac is paired with another iPhone</summary>
+      <p>Flick for Mac works with one iPhone at a time. To switch phones, click <strong>Unpair</strong> in the Flick menu on the Mac, then pair the new iPhone with the PIN.</p>
+    </details>
+
+    <details>
+      <summary>The pointer doesn't move, or nothing gets typed</summary>
+      <p>Flick for Mac needs Accessibility permission. Open System Settings › Privacy &amp; Security › Accessibility and turn on Flick. If it's already on, turn it off and on again; this can be needed after an update.</p>
+    </details>
+
+    <details>
+      <summary>The keyboard doesn't appear in some apps</summary>
+      <p>Flick detects text fields using the Mac's accessibility information. A few apps, such as some games and terminal emulators, don't provide it. Tap the keyboard button on the iPhone to open the keyboard yourself.</p>
+    </details>
+
+    <details>
+      <summary>The pointer feels laggy on Wi-Fi</summary>
+      <p>Flick sends every movement over both Wi-Fi and Bluetooth, so keep Bluetooth on for both devices. Macs on battery power can delay Wi-Fi traffic to save energy; plugging in often helps.</p>
+    </details>
+
+    <h2>Contact</h2>
+    <p>Still stuck, or found a bug? <a href="https://github.com/jmwoliver/flick/issues">Open an issue on GitHub</a>. To report a security problem privately, use <a href="https://github.com/jmwoliver/flick/security/advisories/new">GitHub's private reporting</a> instead.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Flick is open source under the MIT License.</span>
+      <nav aria-label="Footer">
+        <a href="/support" aria-current="page">Support</a>
+        <a href="/privacy">Privacy</a>
+        <a href="https://github.com/jmwoliver/flick">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

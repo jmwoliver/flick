@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy · Flick</title>
+  <meta name="description" content="Flick doesn't collect any data. Here's exactly what stays on your devices.">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/icon.svg" alt="" width="30" height="30">Flick</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="/#download">Download</a>
+        <a href="/support">Support</a>
+        <a class="hide-sm" href="https://github.com/jmwoliver/flick">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="prose">
+    <h1>Privacy Policy</h1>
+    <p class="meta">Effective November 27, 2026</p>
+
+    <p><strong>Flick doesn't collect any data.</strong> There are no accounts, no servers, no analytics, no advertising and no tracking. Flick for iPhone and Flick for Mac talk only to each other, directly, over your local network or Bluetooth.</p>
+
+    <h2>What the apps handle, and where it stays</h2>
+
+    <h3>Your input</h3>
+    <p>Touches, clicks, scrolls and the text you type on the iPhone are sent to the Mac you paired with, so the Mac can perform them. This traffic is encrypted and never leaves your two devices.</p>
+
+    <h3>Text in the field you're typing into</h3>
+    <p>So the iPhone can show what you're editing, the Mac sends it the text around the cursor in the focused text field. Flick never reads or sends the contents of password fields. This text is kept only in memory while you use the app.</p>
+
+    <h3>Your Mac's Dock</h3>
+    <p>The Mac sends the iPhone the names and icons of apps in your Dock, so you can switch apps from the phone. Icons are cached on the iPhone.</p>
+
+    <h3>Pairing</h3>
+    <p>When you pair, the Mac and iPhone share a random security key, which each stores in its own Keychain. On iPhone it never leaves the device and isn't synced to iCloud. The iPhone also stores the name of the Mac it last used and a random identifier for this installation of the app, which it shares with the Mac. The Mac stores that identifier and the name of the paired iPhone.</p>
+
+    <h3>Settings</h3>
+    <p>Your preferences, such as pointer speed and pinned shortcuts, are stored on the device where you set them.</p>
+
+    <h3>Performance log</h3>
+    <p>Flick for Mac keeps a performance log on your Mac at <code>~/Library/Logs/Flick/perf.log</code>, with timings and counts, plus which app and kind of text field had focus. It never contains the text you type. It's capped at about 10&nbsp;MB, and you can delete it at any time.</p>
+
+    <h2>Permissions</h2>
+    <ul>
+      <li><strong>Local Network</strong> (iPhone and Mac): lets the iPhone find and connect to your Mac.</li>
+      <li><strong>Bluetooth</strong> (iPhone and Mac): a second, low-latency path between the devices.</li>
+      <li><strong>Accessibility</strong> (Mac): lets Flick move the pointer, type, and detect when a text field has focus.</li>
+    </ul>
+    <p>None of these are used for anything else.</p>
+
+    <h2>Third parties</h2>
+    <p>Flick doesn't include third-party SDKs and doesn't share data with anyone. This website doesn't use cookies or analytics. It's hosted on Vercel, which, like any web host, processes standard request information such as IP addresses to serve pages.</p>
+
+    <h2>Children</h2>
+    <p>Flick doesn't collect personal information from anyone, including children.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the new version will be posted on this page with a new effective date. Its full history is on <a href="https://github.com/jmwoliver/flick/commits/main/website/privacy.html">GitHub</a>.</p>
+
+    <h2>Contact</h2>
+    <p>Questions? <a href="https://github.com/jmwoliver/flick/issues">Open an issue on GitHub</a>.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Flick is open source under the MIT License.</span>
+      <nav aria-label="Footer">
+        <a href="/support">Support</a>
+        <a href="/privacy" aria-current="page">Privacy</a>
+        <a href="https://github.com/jmwoliver/flick">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
