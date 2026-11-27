@@ -13,6 +13,8 @@ It's two apps:
 
 They connect over Wi-Fi, over Apple's peer-to-peer Wi-Fi when there's no shared network, and over Bluetooth LE at the same time. Whichever copy of each movement arrives first wins, so typical pointer latency is about 2 ms over the network.
 
+Website: **[getflick.net](https://getflick.net)**
+
 > **Status:** pre-release. Until the App Store and Mac downloads are available, [build it from source](#build-from-source).
 
 ## Gestures
