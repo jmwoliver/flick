@@ -19,3 +19,6 @@ dist/
 
 # Vercel CLI project link
 .vercel/
+
+# Local Claude Code config (e.g. the website preview in launch.json)
+.claude/
