@@ -82,7 +82,8 @@ struct DiscoveryView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         if case .failed(let msg) = client.phase { Text(msg).foregroundStyle(.red) }
                         if let note = client.note { Text(note) }
-                        Text("Works on the same Wi-Fi, or directly over Apple's peer-to-peer Wi-Fi (AWDL) when there's no shared network. The PIN is in the Mac's menu bar.")
+                        Text("Flick controls your Mac through the free Flick for Mac app. Install it from [getflick.net](https://getflick.net) and open it, and your Mac appears here. The pairing PIN is in its menu bar icon.")
+                        Text("Your iPhone and Mac connect over the same Wi-Fi, or directly over peer-to-peer Wi-Fi when there's no shared network.")
                     }
                 }
             }

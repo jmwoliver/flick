@@ -392,12 +392,12 @@ final class RemoteClient: ObservableObject {
             DockApp(bundleID: "com.apple.Music", name: "Music", running: false, pinned: true),
             DockApp(bundleID: "com.apple.Notes", name: "Notes", running: true, pinned: false),
         ]
-        frontApp = "com.tinyspeck.slackmacgap"
+        frontApp = "com.apple.Notes"
         if ProcessInfo.processInfo.arguments.contains("-demoKeyboard") {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                var f = FocusInfo(editable: true, secure: false, app: "Slack", role: "AXTextArea", token: 42)
-                f.bundleID = "com.tinyspeck.slackmacgap"; f.kind = .text; f.fieldKey = "demo"; f.invite = true
-                f.context = TextContext(before: "Hey! The new build is on my phone now, the trackpad feels so much smoother", selected: "", after: "")
+                var f = FocusInfo(editable: true, secure: false, app: "Notes", role: "AXTextArea", token: 42)
+                f.bundleID = "com.apple.Notes"; f.kind = .text; f.fieldKey = "demo"; f.invite = true
+                f.context = TextContext(before: "Pick up coffee beans, then call the dentist about Thursday", selected: "", after: "")
                 self.lastFocus = f
                 self.onFocus?(f)
             }
