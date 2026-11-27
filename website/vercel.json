@@ -4,9 +4,9 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "www.getflick.net" }],
-      "destination": "https://getflick.net/:path*",
+      "destination": "https://getflick.net/$1",
       "permanent": true
     }
   ],
