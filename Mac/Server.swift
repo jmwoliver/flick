@@ -85,13 +85,13 @@ final class Server {
 
     private var credential: Credential { paired.map { .paired($0.key) } ?? .pin(pin) }
     private var advertised = false
-    private let macName = Host.current().localizedName ?? "Mac"
+    private let macName = Demo.isOn ? Demo.macName : (Host.current().localizedName ?? "Mac")
 
     init(pin: String) {
         self.pin = pin
-        let d = UserDefaults.standard
+        let d = Store.defaults
         // A pairing from before pairing keys existed has no key: the phone pairs again with the PIN.
-        if let id = d.string(forKey: "pairedDeviceID"), let key = Keychain.data("pairedKey") {
+        if let id = d.string(forKey: "pairedDeviceID"), let key = Keychain.data(Store.key("pairedKey")) {
             paired = PairedDevice(id: id, name: d.string(forKey: "pairedDeviceName") ?? "iPhone", key: key)
         } else if d.string(forKey: "pairedDeviceID") != nil {
             d.removeObject(forKey: "pairedDeviceID"); d.removeObject(forKey: "pairedDeviceName")
@@ -191,12 +191,12 @@ final class Server {
 
     private func setPaired(_ p: PairedDevice?) {
         paired = p
-        let d = UserDefaults.standard
+        let d = Store.defaults
         if let p {
-            Keychain.set(p.key, "pairedKey")
+            Keychain.set(p.key, Store.key("pairedKey"))
             d.set(p.id, forKey: "pairedDeviceID"); d.set(p.name, forKey: "pairedDeviceName")
         } else {
-            Keychain.delete("pairedKey")
+            Keychain.delete(Store.key("pairedKey"))
             d.removeObject(forKey: "pairedDeviceID"); d.removeObject(forKey: "pairedDeviceName")
         }
         DispatchQueue.main.async { self.onPairedChange?(p) }

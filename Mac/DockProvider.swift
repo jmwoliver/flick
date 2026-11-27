@@ -31,6 +31,9 @@ final class DockProvider {
             seen.insert(id)
             list.append(DockApp(bundleID: id, name: app.localizedName ?? id, running: true, pinned: false))
         }
+        if Demo.isOn {
+            list = Demo.dockApps.map { DockApp(bundleID: $0.id, name: $0.name, running: runningIDs.contains($0.id), pinned: true) }
+        }
         let f = NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? ""
         guard list != apps || f != front else { return }
         apps = list; front = f

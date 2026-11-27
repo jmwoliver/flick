@@ -29,10 +29,10 @@ final class MacModel: ObservableObject {
 
     init() {
         // The PIN lives in the Keychain (older builds kept it in UserDefaults).
-        let legacy = UserDefaults.standard.string(forKey: "pin")
-        UserDefaults.standard.removeObject(forKey: "pin")
-        let pin = Keychain.string("pin") ?? legacy ?? MacModel.newPin()
-        Keychain.set(pin, "pin")
+        let legacy = Demo.isOn ? nil : UserDefaults.standard.string(forKey: "pin")
+        if !Demo.isOn { UserDefaults.standard.removeObject(forKey: "pin") }
+        let pin = Demo.isOn ? Demo.pin : (Keychain.string(Store.key("pin")) ?? legacy ?? MacModel.newPin())
+        Keychain.set(pin, Store.key("pin"))
         self.pin = pin
         server = Server(pin: pin)
         server.onStateChange = { [weak self] s in self?.state = s }
@@ -65,7 +65,7 @@ final class MacModel: ObservableObject {
 
     func regeneratePin() {
         pin = MacModel.newPin()
-        Keychain.set(pin, "pin")
+        Keychain.set(pin, Store.key("pin"))
         server.setPin(pin)
     }
 
@@ -74,7 +74,7 @@ final class MacModel: ObservableObject {
     /// Forget the paired phone and its key, and rotate the PIN.
     func unpair() {
         pin = MacModel.newPin()
-        Keychain.set(pin, "pin")
+        Keychain.set(pin, Store.key("pin"))
         notice = nil
         server.unpair(newPin: pin)
     }
